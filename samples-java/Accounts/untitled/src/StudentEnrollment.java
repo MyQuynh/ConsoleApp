@@ -97,6 +97,23 @@ public class StudentEnrollment implements StudentEnrollmentManager {
 
     @Override
     public void update() {
+        // Check if the student ID is exist
+        String studentId = getStudentById();
+        int flag = 0;
+        System.out.println("Asking for the semester");
+        String semester = Main.scanner.next();
+        System.out.println("Student ID" + studentId);
+        System.out.println("Semester " + semester);
+        System.out.println("Course list");
+        for (StudentEnrollment studentEnrollment: studentEnrollments) {
+            if (studentEnrollment.getStudentById().equals(studentId) && studentEnrollment.getSemester().equals(semester)){
+                System.out.println(studentEnrollment.getCourses());
+                flag = 1;
+            }
+        }
+        if (flag == 0){
+            System.out.println("List course is empty, please try again");
+        }
 
     }
 
@@ -113,5 +130,26 @@ public class StudentEnrollment implements StudentEnrollmentManager {
     @Override
     public void getAll() {
 
+    }
+
+    public String getStudentById(){
+        int flag = 0;
+        String studentId = "";
+        while (flag == 0){
+            System.out.println("Please enter the student id");
+            studentId = Main.scanner.next();
+
+            for (StudentEnrollment studentEnrollment : studentEnrollments){
+                if ((studentEnrollment.getStudent().getId().equals(studentId))) {
+                    flag = 1;
+                    break;
+                }
+            }
+
+            if(flag != 1){
+                System.out.println("Please enter again");
+            }
+        }
+        return studentId;
     }
 }
