@@ -99,9 +99,9 @@ public class StudentEnrollment implements StudentEnrollmentManager {
     public void update() {
         // Check if the student ID is exist
         String studentId = getStudentById();
+        String semester = checkSemester();
         int flag = 0;
-        System.out.println("Asking for the semester");
-        String semester = Main.scanner.next();
+
         System.out.println("Student ID" + studentId);
         System.out.println("Semester " + semester);
         System.out.println("Course list");
@@ -151,5 +151,26 @@ public class StudentEnrollment implements StudentEnrollmentManager {
             }
         }
         return studentId;
+    }
+
+    public String checkSemester(){
+        int flag = 0;
+        String studentSemester = "";
+        while (flag == 0){
+            System.out.println("Please enter the student id");
+            studentSemester = Main.scanner.next();
+
+            for (StudentEnrollment studentEnrollment : studentEnrollments){
+                if ((studentEnrollment.getSemester().equals(studentSemester))) {
+                    flag = 1;
+                    break;
+                }
+            }
+
+            if(flag != 1){
+                System.out.println("Please enter again");
+            }
+        }
+        return studentSemester;
     }
 }
