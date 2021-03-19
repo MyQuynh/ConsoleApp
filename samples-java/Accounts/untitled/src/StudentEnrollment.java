@@ -117,6 +117,27 @@ public class StudentEnrollment implements StudentEnrollmentManager {
 
     }
 
+    public void getStudentByCourse(){
+       String studentCourse = checkCourse();
+       String semester = checkSemester();
+       int flag = 0;
+
+        for (StudentEnrollment studentEnrollment: studentEnrollments) {
+            for (Course studentCourseI : studentEnrollment.getCourses()){
+                if (studentCourseI.getId().equals(studentCourse) && studentEnrollment.getSemester().equals(semester)) {
+                    flag = 1;
+                    break;
+                }
+            }
+            if (flag == 1){
+                System.out.println(studentEnrollment.getStudent());
+            }
+        }
+        if (flag == 0){
+            System.out.println("List course is empty, please try again");
+        }
+    }
+
     @Override
     public void delete() {
 
@@ -172,5 +193,29 @@ public class StudentEnrollment implements StudentEnrollmentManager {
             }
         }
         return studentSemester;
+    }
+
+    public String checkCourse(){
+        int flag = 0;
+        String studentCourse = "";
+        while(flag == 0){
+            System.out.println("Please enter the student course");
+            studentCourse = Main.scanner.next();
+
+            for (StudentEnrollment studentEnrollment : studentEnrollments){
+                for(Course studentCourseI : studentEnrollment.getCourses()){
+                    if(studentCourseI.getId().equals(studentCourse)){
+                        flag = 1;
+                        break;
+                    }
+                }
+            }
+
+            if(flag != 1){
+                System.out.println("Please enter again");
+            }
+
+        }
+        return studentCourse;
     }
 }
