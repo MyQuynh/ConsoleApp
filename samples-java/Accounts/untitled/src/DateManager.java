@@ -11,7 +11,7 @@ public class DateManager {
             date= formatDate.parse(sDate1);
             return date;
         } catch (ParseException e) {
-            System.out.println("Wrong date format, please enter again (dd/MM/yyyy)");;
+            System.out.println("Wrong date format, please enter again (dd/MM/yyyy)");
         }
         return null;
 
