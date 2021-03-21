@@ -35,4 +35,12 @@ public class Student {
         this.birthdate = birthdate;
     }
 
+    @Override
+    public String toString() {
+        return "Student{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", birthdate=" + birthdate +
+                '}';
+    }
 }
