@@ -95,8 +95,8 @@ public class StudentEnrollment implements StudentEnrollmentManager {
 
     @Override
     public void add() {
-        StudentManager studentManager = new StudentManager();
-        CourseManager courseManager = new CourseManager();
+        StudentManager studentManager = Main.studentManager;
+        CourseManager courseManager = Main.courseManager;
 
         // Check if the student is on the system
         String studentID = studentManager.validStudent();
