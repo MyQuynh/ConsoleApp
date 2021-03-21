@@ -9,6 +9,8 @@ public class StudentEnrollment implements StudentEnrollmentManager {
 
     protected ArrayList<StudentEnrollment> studentEnrollments;
 
+    public StudentEnrollment(){};
+
     public StudentEnrollment(Student student, ArrayList<Course> courses, String semester) {
         this.student = student;
         this.courses = courses;
@@ -41,19 +43,19 @@ public class StudentEnrollment implements StudentEnrollmentManager {
 
     public void askingInfo(){
         StudentEnrollment studentEnrollment;
-        Student student = null;
-        System.out.println("Enter the id:");
+        DateManager dateManager = new DateManager();
+
+        System.out.print("Enter the id:");
         String studentId = Main.scanner.next();
 
-        System.out.println("Enter the name");
+        System.out.print("Enter the name");
         String studentName = Main.scanner.next();
 
-        System.out.println("Enter the dateOfBirth");
+        System.out.print("Enter the dateOfBirth");
         String dateOfBirth = Main.scanner.next();
 
 
-        assert false;
-        student = new Student(studentId,studentName,student.convertDateString(dateOfBirth));
+        Student student = new Student(studentId,studentName,dateManager.convertDateString(dateOfBirth));
 
         System.out.println("Enter the semester:");
         String semester = Main.scanner.next();
@@ -217,5 +219,18 @@ public class StudentEnrollment implements StudentEnrollmentManager {
 
         }
         return studentCourse;
+    }
+
+    public void getCoursesBySemester(){
+        String semester = checkSemester();
+        int flag = 0;
+
+        for (StudentEnrollment studentEnrollment: studentEnrollments) {
+            for (Course studentCourseI : studentEnrollment.getCourses()){
+                if (studentEnrollment.getSemester().equals(semester)) {
+                    System.out.println(studentCourseI);
+                }
+            }
+        }
     }
 }
