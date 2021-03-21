@@ -1,15 +1,13 @@
-import java.sql.SQLOutput;
 import java.util.ArrayList;
-import java.util.Date;
 
 public class StudentEnrollment implements StudentEnrollmentManager {
     private Student student;
     private ArrayList<Course> courses;
     private String semester;
 
-    protected ArrayList<StudentEnrollment> studentEnrollments;
+    protected ArrayList<StudentEnrollment> studentEnrollments = new ArrayList<>();
 
-    public StudentEnrollment(){};
+    public StudentEnrollment(){}
 
     public StudentEnrollment(Student student, ArrayList<Course> courses, String semester) {
         this.student = student;
@@ -42,23 +40,23 @@ public class StudentEnrollment implements StudentEnrollmentManager {
     }
 
     public void askingInfo(){
-        StudentEnrollment studentEnrollment;
+
         DateManager dateManager = new DateManager();
 
         System.out.print("Enter the id:");
-        String studentId = Main.scanner.next();
+        String studentId = Main.scanner.nextLine();
 
         System.out.print("Enter the name");
-        String studentName = Main.scanner.next();
+        String studentName = Main.scanner.nextLine();
 
         System.out.print("Enter the dateOfBirth");
-        String dateOfBirth = Main.scanner.next();
+        String dateOfBirth = Main.scanner.nextLine();
 
 
         Student student = new Student(studentId,studentName,dateManager.convertDateString(dateOfBirth));
 
-        System.out.println("Enter the semester:");
-        String semester = Main.scanner.next();
+        System.out.print("Enter the semester:");
+        String semester = Main.scanner.nextLine();
 
 
         int courseCheck = 0;
@@ -66,30 +64,33 @@ public class StudentEnrollment implements StudentEnrollmentManager {
         while(courseCheck == 0){
             System.out.println("Enter the course");
             Course course;
-            System.out.println("Please enter the  course id:");
-            String courseId = Main.scanner.next();
-            System.out.println("Enter the name of the course: ");
-            String courseName = Main.scanner.next();
-            System.out.println("Enter the numbers of credits:");
+            System.out.print("Please enter the  course id:");
+            String courseId = Main.scanner.nextLine();
+            System.out.print("Enter the name of the course: ");
+            String courseName = Main.scanner.nextLine();
+            System.out.print("Enter the numbers of credits:");
             int numberOfCredits = Main.scanner.nextInt();
             course = new Course(courseId,courseName,numberOfCredits);
 
+            Main.scanner.nextLine();
+
             courses.add(course);
 
-            System.out.println("Do you want to add another course ? Y/n");
-            String input = Main.scanner.next();
-            while(!input.equalsIgnoreCase("Y") || !input.equalsIgnoreCase("N")){
-                System.out.println("Invalid input, please enter only Y/y or N/n");
-                input = Main.scanner.next();
+            System.out.print("Do you want to add another course ? Y/n");
+            String input = Main.scanner.nextLine();
+            while(!input.equalsIgnoreCase("Y") && !input.equalsIgnoreCase("N")){
+                System.out.print("Invalid input, please enter only Y/y or N/n");
+                input = Main.scanner.nextLine();
             }
 
             if (input.equalsIgnoreCase("N")){
                 courseCheck = 1;
             }
         }
-        studentEnrollment = new StudentEnrollment(student, courses, semester);
+        StudentEnrollment studentEnrollment = new StudentEnrollment(student, courses, semester);
         this.studentEnrollments.add(studentEnrollment);
 
+        Main.scanner.close();
     }
 
     @Override
@@ -232,5 +233,10 @@ public class StudentEnrollment implements StudentEnrollmentManager {
                 }
             }
         }
+    }
+
+    @Override
+    public String toString() {
+        return "studentEnrollments=" + studentEnrollments;
     }
 }
