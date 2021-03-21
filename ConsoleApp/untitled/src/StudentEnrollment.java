@@ -95,7 +95,33 @@ public class StudentEnrollment implements StudentEnrollmentManager {
 
     @Override
     public void add() {
+        StudentManager studentManager = new StudentManager();
+        CourseManager courseManager = new CourseManager();
 
+        // Check if the student is on the system
+        String studentID = studentManager.validStudent();
+        ArrayList<Course> studentCourse = new ArrayList<>();
+
+        System.out.print("Please enter the semester you want to enroll: ");
+        String semester = Main.scanner.nextLine();
+
+        // Check if the course is available in the system
+        while (true){
+            String courseId = courseManager.validCourse();
+            studentCourse.add(courseManager.getCourseById(courseId));
+            System.out.print("Do you want to add another course ? (Y/n) ");
+            String input = Main.scanner.nextLine();
+            while(!input.equalsIgnoreCase("Y") && !input.equalsIgnoreCase("N")){
+                System.out.print("Invalid input, please enter only Y/y or N/n");
+                input = Main.scanner.nextLine();
+            }
+            if (input.equalsIgnoreCase("n")){
+                break;
+            }
+        }
+
+        StudentEnrollment studentEnrollment = new StudentEnrollment(studentManager.getStudentById(studentID), studentCourse, semester);
+        this.studentEnrollments.add(studentEnrollment);
     }
 
     @Override
@@ -160,8 +186,8 @@ public class StudentEnrollment implements StudentEnrollmentManager {
         int flag = 0;
         String studentId = "";
         while (flag == 0){
-            System.out.println("Please enter the student id");
-            studentId = Main.scanner.next();
+            System.out.print("Please enter the student id: ");
+            studentId = Main.scanner.nextLine();
 
             for (StudentEnrollment studentEnrollment : studentEnrollments){
                 if ((studentEnrollment.getStudent().getId().equals(studentId))) {

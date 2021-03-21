@@ -28,7 +28,7 @@ public class Main {
             if (input.equals("1")){
 
                 // Call out the adding student enrollment methods
-                studentEnrollment.askingInfo();
+                studentEnrollment.add();
             } else if (input.equals("2")) {
                 while (true){
 
