@@ -17,19 +17,18 @@ public class Main {
 
             // Making the interface of main menu
             System.out.println("MAIN MENU");
-            System.out.println("1. Enroll a student for 1 semester");
-            System.out.println("2. Update the enrollment for 1 semester");
-            System.out.println("3. Get courses by student in 1 semester");
-            System.out.println("4. Get all the students by course in 1 semester");
-            System.out.println("5. Get all the course in 1 semester");
-            System.out.println("6. Exit");
+            System.out.println("1. Adding a student enrollment");
+            System.out.println("2. Update the student enrollment");
+            System.out.println("3. Display the student enrollment");
+            System.out.println("4. Delete a student enrollment");
+            System.out.println("5. Exit");
 
             // Get the option from user
+            // TODO: Check if the option is valid (Not done)
             System.out.print("Your option: ");
             String input = Main.scanner.nextLine();
 
             if (input.equals("1")){
-
                 // Call out the adding student enrollment methods
                 studentEnrollment.add();
             } else if (input.equals("2")) {
@@ -54,12 +53,30 @@ public class Main {
                     }
                 }
             } else if (input.equals("3")){
-                studentEnrollment.update();
+                while(true){
+                    // Making the interface for update enrollment menu
+                    System.out.println("DISPLAY ENROLLMENT MENU");
+                    System.out.println("1. Display all courses by student");
+                    System.out.println("2. Display all students by course");
+                    System.out.println("3. Return to main menu");
+                    System.out.print("Your option: ");
+
+                    // Get the input from the users
+                    input = Main.scanner.nextLine();
+                    if (input.equals("1")){
+                        studentEnrollment.getCourseByStudent();
+                    } else if (input.equals("2")) {
+                        studentEnrollment.getStudentByCourse();
+                    } else {
+                        // Break the while loop to return back to the main menu
+                        break;
+                    }
+                }
+
             } else if (input.equals("4")){
-                studentEnrollment.getStudentByCourse();
-            } else if (input.equals("5")) {
-                studentEnrollment.getCoursesBySemester();
-            } else {
+                studentEnrollment.getAll();
+            }
+            else {
                 System.out.println("Thank you for using the system, have a good day");
                 break;
             }
@@ -68,9 +85,9 @@ public class Main {
     }
 
     public static void main(String[] args){
-        System.out.println(studentEnrollment.toString());
+        studentEnrollment.getAll();
         menu();
         //courseManager.showCoursesList();
-        System.out.println(studentEnrollment.toString());
+        studentEnrollment.getAll();
     }
 }
