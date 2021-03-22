@@ -44,6 +44,7 @@ public class CourseManager {
         int flag = 0;
         String courseId = "";
         while (flag == 0){
+            showCoursesList();
             System.out.print("Please enter the course ID: ");
             courseId = Main.scanner.nextLine();
 
@@ -69,6 +70,19 @@ public class CourseManager {
             }
         }
         return null;
+    }
+
+    public void showCoursesList(){
+
+        System.out.println("---------------");
+        System.out.println("LIST OF COURSE");
+        System.out.println("---------------------------------------------------------------------------------------");
+        System.out.println("| " + String.format("%1$-18s", "COURSE_ID" + " | " + String.format("%1$-50s", "COURSE_NAME") + " | " + String.format("%1$18s", "COURSE_CREDITS") + " | "));
+        for (Course course : this.coursesList) {
+            System.out.println("| " + String.format("%1$-9s", course.getId()) + " | " + String.format("%1$-50s", course.getName()) + " | " + String.format("%1$18s", course.getNumber_of_credits()) + " | ");
+        }
+        System.out.println("---------------------------------------------------------------------------------------");
+        System.out.println();
     }
 
     public void listOfCourses(){
