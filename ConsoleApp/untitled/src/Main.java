@@ -7,10 +7,11 @@ public class Main {
     public static Scanner scanner = new Scanner(System.in);
     public static CourseManager courseManager = new CourseManager();
     public static StudentManager studentManager = new StudentManager();
+    public static StudentEnrollment studentEnrollment = new StudentEnrollment();
 
     public static void menu(){
         // Creating the object to later use the add, update,etc methods
-        StudentEnrollment studentEnrollment = new StudentEnrollment();
+        //StudentEnrollment studentEnrollment = new StudentEnrollment();
 
         while (true){
 
@@ -44,9 +45,9 @@ public class Main {
                     // Get the input from the users
                     input = Main.scanner.nextLine();
                     if (input.equals("1")){
-                        studentEnrollment.add();
+                        studentEnrollment.addingCourseForStudent();
                     } else if (input.equals("2")) {
-                        studentEnrollment.delete();
+                        studentEnrollment.deleteCourseForStudent();
                     } else {
                         // Break the while loop to return back to the main menu
                         break;
@@ -67,6 +68,9 @@ public class Main {
     }
 
     public static void main(String[] args){
+        System.out.println(studentEnrollment.toString());
         menu();
+        //courseManager.showCoursesList();
+        System.out.println(studentEnrollment.toString());
     }
 }
