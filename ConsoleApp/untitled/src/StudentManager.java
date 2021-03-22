@@ -47,9 +47,6 @@ public class StudentManager {
         while (flag == 0){
             System.out.print("Please enter the student id: ");
             studentId = Main.scanner.nextLine();
-            System.out.println(studentId);
-
-            System.out.println(this.toString());
 
             for (Student student : this.students){
                 if (student.getId().equals(studentId)) {
