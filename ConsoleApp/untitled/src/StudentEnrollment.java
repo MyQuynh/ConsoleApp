@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.HashSet;
 
 public class StudentEnrollment implements StudentEnrollmentManager {
     private Student student;
@@ -309,6 +310,7 @@ public class StudentEnrollment implements StudentEnrollmentManager {
     }
 
     // Display the student by the given course
+    // TODO: Must included semester and allowed to save CSV
     public void getStudentByCourse(){
         DateManager dateManager = new DateManager();
 
@@ -337,6 +339,7 @@ public class StudentEnrollment implements StudentEnrollmentManager {
     }
 
     // Display the course by student
+    // TODO: Must included semester
     public void getCourseByStudent(){
         String studentId = getStudentById();
         System.out.println("-------------------------------------------------------------------------");
@@ -355,6 +358,37 @@ public class StudentEnrollment implements StudentEnrollmentManager {
         System.out.println();
     }
 
+    // Display all the course in the semester
+    // TODO: Case 1: The will be more than one student enrolled in the course (already done but not check)
+    // TODO: Allowed to save to csv file
+    public void getCourseBySemester(){
+        // Check if in that semester have any course enrollment
+        String semester = checkSemester();
+        System.out.println("-----------------------------------------------------");
+        System.out.println("LIST OF COURSES IN SEMESTER "+semester.toUpperCase());
+        System.out.println("---------------------------------------------------------------------------------------");
+        System.out.println("| " + String.format("%1$-18s", "COURSE_ID" + " | " + String.format("%1$-50s", "COURSE_NAME") + " | " + String.format("%1$18s", "COURSE_CREDITS") + " | "));
+
+        ArrayList<Course> listCourses= new ArrayList<>();
+
+        for (StudentEnrollment studentEnrollment : studentEnrollments){
+            if(studentEnrollment.getSemester().equals(checkCourse())){
+                listCourses.addAll(studentEnrollment.getCourses());
+            }
+        }
+
+        // Generate to get unique value
+        HashSet<Course> uniqueCourseList = new HashSet(listCourses);
+        for(Course course : uniqueCourseList){
+            System.out.println("| " + String.format("%1$-9s", course.getId()) + " | " + String.format("%1$-50s", course.getName()) + " | " + String.format("%1$18s", course.getNumber_of_credits()) + " | ");
+        }
+        System.out.println("---------------------------------------------------------------------------------------");
+        System.out.println();
+
+    }
+
+
+
     // Two option: List the course by student and List the student by Course
     @Override
     public void getOne() {
@@ -363,11 +397,18 @@ public class StudentEnrollment implements StudentEnrollmentManager {
        getCourseByStudent();
     }
 
-    // TODO: Modified to make it user friendly
+    // TODO: Modified to make it user friendly (Not yet checked)
     @Override
     public void getAll() {
+        System.out.println("-------------------------------");
+        System.out.println("LIST OF ALL STUDENT ENROLLMENTS");
+        System.out.println("---------------------------------------------------------------------------------------");
+        System.out.println("| " + String.format("%1$-18s", "STUDENT_ID" + " | " + String.format("%1$-50s", "COURSE_ID") + " | " + String.format("%1$18s", "SEMESTER") + " | "));
+
         for (StudentEnrollment studentEnrollment: this.studentEnrollments){
-            System.out.println(studentEnrollment);
+            for (Course course : studentEnrollment.getCourses()){
+                System.out.println("| " + String.format("%1$-18s", studentEnrollment.getStudent().getId() + " | " + String.format("%1$-50s", course.getId()) + " | " + String.format("%1$18s", studentEnrollment.getSemester()) + " | "));
+            }
         }
     }
 
@@ -451,18 +492,18 @@ public class StudentEnrollment implements StudentEnrollmentManager {
         return studentCourse;
     }
 
-    public void getCoursesBySemester(){
-        String semester = checkSemester();
-        int flag = 0;
-
-        for (StudentEnrollment studentEnrollment: studentEnrollments) {
-            for (Course studentCourseI : studentEnrollment.getCourses()){
-                if (studentEnrollment.getSemester().equals(semester)) {
-                    System.out.println(studentCourseI);
-                }
-            }
-        }
-    }
+//    public void getCoursesBySemester(){
+//        String semester = checkSemester();
+//        int flag = 0;
+//
+//        for (StudentEnrollment studentEnrollment: studentEnrollments) {
+//            for (Course studentCourseI : studentEnrollment.getCourses()){
+//                if (studentEnrollment.getSemester().equals(semester)) {
+//                    System.out.println(studentCourseI);
+//                }
+//            }
+//        }
+//    }
 
 //    // Display the list of student enrollments (might similar to getAll())
 //    public void displayStudentEnrollments() {
