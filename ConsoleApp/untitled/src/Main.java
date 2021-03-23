@@ -58,7 +58,8 @@ public class Main {
                     System.out.println("DISPLAY ENROLLMENT MENU");
                     System.out.println("1. Display all courses by student");
                     System.out.println("2. Display all students by course");
-                    System.out.println("3. Return to main menu");
+                    System.out.println("3. Display all the course in the semester");
+                    System.out.println("4. Return to main menu");
                     System.out.print("Your option: ");
 
                     // Get the input from the users
@@ -67,7 +68,10 @@ public class Main {
                         studentEnrollment.getCourseByStudent();
                     } else if (input.equals("2")) {
                         studentEnrollment.getStudentByCourse();
-                    } else {
+                    } else if (input.equals("3")){
+                        studentEnrollment.getCourseBySemester();
+                    }
+                    else {
                         // Break the while loop to return back to the main menu
                         break;
                     }
