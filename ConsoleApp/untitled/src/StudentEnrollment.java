@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.regex.Pattern;
 
 public class StudentEnrollment implements StudentEnrollmentManager {
     private Student student;
@@ -109,17 +110,14 @@ public class StudentEnrollment implements StudentEnrollmentManager {
         ArrayList<Course> studentCourse = new ArrayList<>();
 
         //Main.scanner.nextLine();
-
-        System.out.print("Please enter the semester you want to enroll: ");
-        String semester = Main.scanner.nextLine();
+        String semester = validSemester();
 
         // Check if the student enrollment is already in system
         while (checkStudentEnrollment(studentID, semester)){
             System.out.println("This enrollment is already on the system");
             System.out.println("Please try again");
             studentID = studentManager.validStudent();
-            System.out.print("Please enter the semester you want to enroll: ");
-            semester = Main.scanner.nextLine();
+            semester = validSemester();
         }
 
         // Check if the course is available in the system
@@ -154,17 +152,16 @@ public class StudentEnrollment implements StudentEnrollmentManager {
     // TODO: Case 2: Asking if the user want to delete another student enrollment
     @Override
     public void delete() {
+
         String studentId = getStudentById();
-        System.out.println("Please enter the semester");
-        String semester = Main.scanner.nextLine();
+        String semester = validSemester();
 
         // check if the student enrollment is on the system
         while(!checkStudentEnrollment(studentId, semester)){
             System.out.println("This student enrollment is not recognized by the system");
             System.out.println("Please try again");
             studentId = getStudentById();
-            System.out.println("Please enter the semester");
-            semester = Main.scanner.nextLine();
+            semester = validSemester();
         }
 
         for (StudentEnrollment studentEnrollment : this.studentEnrollments) {
@@ -177,11 +174,20 @@ public class StudentEnrollment implements StudentEnrollmentManager {
 
     // Adding Course for Student in Specific Semester
     // Case 1: Check if the course had been enrolled before (Done)
+    // TODO : CASE 2: Check if the the student have already enroll that semester
     public void addingCourseForStudent(){
         String studentId = studentManager.validStudent();
-        System.out.print("Please enter the semester: ");
-        String semester = Main.scanner.nextLine();
+        String semester = validSemester();
         displayCoursesOfStudent(studentId, semester);
+
+        // check if the student enrollment is on the system
+        while(!checkStudentEnrollment(studentId, semester)){
+            System.out.println("This student enrollment is not recognized by the system");
+            System.out.println("Please try again");
+            studentId = getStudentById();
+            semester = validSemester();
+        }
+
         while (true){
             // Checking if the course id is in the system
             String courseStudent = courseManager.validCourse();
@@ -216,8 +222,16 @@ public class StudentEnrollment implements StudentEnrollmentManager {
     // Case 1: Check if the course had been already enrolled (Done)
     public void deleteCourseForStudent(){
         String studentId = studentManager.validStudent();
-        System.out.print("Please enter the semester: ");
-        String semester = Main.scanner.nextLine();
+        String semester = validSemester();
+
+        // check if the student enrollment is on the system
+        while(!checkStudentEnrollment(studentId, semester)){
+            System.out.println("This student enrollment is not recognized by the system");
+            System.out.println("Please try again");
+            studentId = getStudentById();
+            semester = validSemester();
+        }
+
         displayCoursesOfStudent(studentId, semester);
         while (true){
             // Checking if the course id is in the system
@@ -387,14 +401,14 @@ public class StudentEnrollment implements StudentEnrollmentManager {
 
     }
 
-
-
     // Two option: List the course by student and List the student by Course
+    // TODO: Bring all the menu of display in the Main.class to here
     @Override
     public void getOne() {
         // Get student (list all the course by student) or course (list all the student by course)
        getStudentByCourse();
        getCourseByStudent();
+       getCourseBySemester();
     }
 
     // TODO: Modified to make it user friendly (Not yet checked)
@@ -411,6 +425,7 @@ public class StudentEnrollment implements StudentEnrollmentManager {
             }
         }
     }
+
 
     // Check if the student is in the enrollment list
     public String getStudentById(){
@@ -435,20 +450,10 @@ public class StudentEnrollment implements StudentEnrollmentManager {
         return studentId;
     }
 
-    // Check if in the student's enrollment have the semester
-//    public boolean checkSemesterInStudentEnrollment(String studentId, String semester){
-//        for (StudentEnrollment studentEnrollment: this.studentEnrollments){
-//            if(studentEnrollment.getStudent().getId().equalsIgnoreCase(studentId) && studentEnrollment.getSemester().equalsIgnoreCase(semester)){
-//                return true;
-//            }
-//        }
-//        return false;
-//    }
-
     // Check if the semester appear in the enrollment list
     public String checkSemester(){
         int flag = 0;
-        String studentSemester = "";
+        String studentSemester = validSemester();
         while (flag == 0){
             System.out.print("Please enter the student id");
             studentSemester = Main.scanner.nextLine();
@@ -492,50 +497,33 @@ public class StudentEnrollment implements StudentEnrollmentManager {
         return studentCourse;
     }
 
-//    public void getCoursesBySemester(){
-//        String semester = checkSemester();
-//        int flag = 0;
-//
-//        for (StudentEnrollment studentEnrollment: studentEnrollments) {
-//            for (Course studentCourseI : studentEnrollment.getCourses()){
-//                if (studentEnrollment.getSemester().equals(semester)) {
-//                    System.out.println(studentCourseI);
-//                }
-//            }
-//        }
-//    }
+    public String validSemester(){
 
-//    // Display the list of student enrollments (might similar to getAll())
-//    public void displayStudentEnrollments() {
-//        for (StudentEnrollment studentEnrollment: this.studentEnrollments){
-//            System.out.println(studentEnrollment);
-//        }
-//    }
+        while(true){
+            System.out.println("Please enter the semester: ");
+            String semester = Main.scanner.nextLine();
+            Pattern patternSemester = Pattern.compile("2021(A|B|C)");
 
-    //    public StudentEnrollment displayStudentEnrollment(String studentId, String semester, String courseId){
-//        StudentEnrollment studentEnrollment = new StudentEnrollment();
-//        // Display all the student enrollment list
-//        if (studentId.equals("") && semester.equals("") && courseId.equals("")){
-//            System.out.println("huhu");
-//        }
-//        // Display the student Enrollment by student Id
-//        else if (semester.equals("") && courseId.equals("")){
-//            System.out.println("hwdh");
-//        }
-//        // Display the student enrollment by semester
-//        else if (studentId.equals("") && courseId.equals("")){
-//            System.out.println("dhdjheu");
-//        }
-//        // Display the student enrollment by student Id and semester
-//        else if (courseId.equals("")){
-//            for (StudentEnrollment studentEnrollment1 : this.studentEnrollments){
-//                if(studentEnrollment1.getStudent().getId().equals(studentId) && studentEnrollment1.getSemester().equals(semester)){
-//                    studentEnrollment = studentEnrollment1;
-//                }
-//            }
-//        }
-//        return studentEnrollment;
-//    }
+            // If it matches the Pattern below, it will stop the loop and return the email
+            if (patternSemester.matcher(semester).matches()) {
+                return semester;
 
+
+            }
+            // If the input semester is empty, notify to the users and make the user write the email again
+            else if (semester.equals("")) {
+                System.out.println("Cannot be empty");
+                System.out.println("Please try again");
+
+
+            }
+            // The user not match the below patter, notify to the user and make the user write the semester again
+            else {
+                System.out.println("Invalid Semester: The semester should have format 2021A/2021B/2021C");
+                System.out.println("Please try again");
+            }
+        }
+
+    }
 
 }
