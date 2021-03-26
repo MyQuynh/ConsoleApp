@@ -1,11 +1,19 @@
-import java.util.Date;
+package Model;
 
-public class Student {
+import java.util.Arrays;
+import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
+
+public class Student implements AdditionService {
     private String id;
     private String name;
-    private Date birthdate;
+    private String birthdate;
 
-    public Student(String id, String name, Date birthdate) {
+    public List<String> propertyStudent = Arrays.asList("STUDENT_ID", "STUDENT_NAME", "DATE_OF_BIRTH");
+
+
+    public Student(String id, String name, String birthdate) {
         this.id = id;
         this.name = name;
         this.birthdate = birthdate;
@@ -27,20 +35,25 @@ public class Student {
         this.name = name;
     }
 
-    public Date getBirthdate() {
+    public String getBirthdate() {
         return birthdate;
     }
 
-    public void setBirthdate(Date birthdate) {
+    public void setBirthdate(String birthdate) {
         this.birthdate = birthdate;
     }
 
     @Override
     public String toString() {
-        return "Student{" +
+        return "Model.Student{" +
                 "id='" + id + '\'' +
                 ", name='" + name + '\'' +
                 ", birthdate=" + birthdate +
                 '}';
+    }
+
+    @Override
+    public String toCSV() {
+        return this.getId()+","+this.getName()+","+this.getBirthdate()+"\n";
     }
 }

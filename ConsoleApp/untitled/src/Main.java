@@ -1,4 +1,7 @@
-import java.util.Date;
+import Model.Course;
+import Model.Student;
+import Model.StudentEnrollment;
+
 import java.util.Scanner;
 
 public class Main {
@@ -8,10 +11,11 @@ public class Main {
     public static CourseManager courseManager = new CourseManager();
     public static StudentManager studentManager = new StudentManager();
     public static StudentEnrollment studentEnrollment = new StudentEnrollment();
+    public static StudentMemoryManager studentMemoryManager = new StudentMemoryManager();
 
     public static void menu(){
         // Creating the object to later use the add, update,etc methods
-        //StudentEnrollment studentEnrollment = new StudentEnrollment();
+        //Model.StudentEnrollment studentEnrollment = new Model.StudentEnrollment();
 
         while (true){
 
@@ -30,7 +34,7 @@ public class Main {
 
             if (input.equals("1")){
                 // Call out the adding student enrollment methods
-                studentEnrollment.add();
+                studentMemoryManager.add();
             } else if (input.equals("2")) {
                 while (true){
 
@@ -44,9 +48,9 @@ public class Main {
                     // Get the input from the users
                     input = Main.scanner.nextLine();
                     if (input.equals("1")){
-                        studentEnrollment.addingCourseForStudent();
+                        studentMemoryManager.addingCourseForStudent();
                     } else if (input.equals("2")) {
-                        studentEnrollment.deleteCourseForStudent();
+                        studentMemoryManager.deleteCourseForStudent();
                     } else {
                         // Break the while loop to return back to the main menu
                         break;
@@ -65,11 +69,11 @@ public class Main {
                     // Get the input from the users
                     input = Main.scanner.nextLine();
                     if (input.equals("1")){
-                        studentEnrollment.getCourseByStudent();
+                        studentMemoryManager.getCourseByStudent();
                     } else if (input.equals("2")) {
-                        studentEnrollment.getStudentByCourse();
+                        studentMemoryManager.getStudentByCourse();
                     } else if (input.equals("3")){
-                        studentEnrollment.getCourseBySemester();
+                        studentMemoryManager.getCourseBySemester();
                     }
                     else {
                         // Break the while loop to return back to the main menu
@@ -78,7 +82,7 @@ public class Main {
                 }
 
             } else if (input.equals("4")){
-                studentEnrollment.getAll();
+                studentMemoryManager.getAll();
             }
             else {
                 System.out.println("Thank you for using the system, have a good day");
@@ -89,9 +93,12 @@ public class Main {
     }
 
     public static void main(String[] args){
-        studentEnrollment.getAll();
+
+        studentMemoryManager.studentEnrollments.add(new StudentEnrollment(new Student("S3836322","Quynh","08-08-2001"), new Course("COSC2429","huhuhu",676), "2021A"));
+
+        studentMemoryManager.getAll();
         menu();
         //courseManager.showCoursesList();
-        studentEnrollment.getAll();
+        studentMemoryManager.getAll();
     }
 }

@@ -1,9 +1,15 @@
-import java.util.ArrayList;
+package Model;
 
-public class Course {
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+public class Course implements AdditionService {
     private String id;
     private String name;
     private int number_of_credits;
+
+    public List<String> propertyCourse = Arrays.asList("COURSE_ID", "COURSE_NAME", "NUMBER_OF_CREDITS");
 
     public Course(){}
 
@@ -40,10 +46,17 @@ public class Course {
 
     @Override
     public String toString() {
-        return "Course{" +
+        return "Model.Course{" +
                 "id='" + id + '\'' +
                 ", name='" + name + '\'' +
                 ", number_of_credits=" + number_of_credits +
                 '}';
     }
+
+    @Override
+    public String toCSV() {
+        return this.getId()+","+this.getName()+","+this.getNumber_of_credits()+"\n";
+    }
+
+
 }

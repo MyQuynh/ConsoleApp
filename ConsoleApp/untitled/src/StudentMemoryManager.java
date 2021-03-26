@@ -1,102 +1,22 @@
+import Model.AdditionService;
+import Model.Course;
+import Model.Student;
+import Model.StudentEnrollment;
+
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.regex.Pattern;
 
-public class StudentEnrollment implements StudentEnrollmentManager {
-    private Student student;
-    private ArrayList<Course> courses;
-    private String semester;
+public class StudentMemoryManager implements StudentEnrollmentManager {
 
-    protected ArrayList<StudentEnrollment> studentEnrollments = new ArrayList<>();
+    ArrayList<StudentEnrollment> studentEnrollments = new ArrayList<>();
+    CourseManager courseManager = new CourseManager();
+    StudentManager studentManager = new StudentManager();
 
-    public StudentEnrollment(){}
-
-    public StudentEnrollment(Student student, ArrayList<Course> courses, String semester) {
-        this.student = student;
-        this.courses = courses;
-        this.semester = semester;
-    }
-
-    StudentManager studentManager = Main.studentManager;
-    CourseManager courseManager = Main.courseManager;
-
-    public Student getStudent() {
-        return student;
-    }
-
-    public void setStudent(Student student) {
-        this.student = student;
-    }
-
-    public ArrayList<Course> getCourses() {
-        return courses;
-    }
-
-    public void setCourses(ArrayList<Course> courses) {
-        this.courses = courses;
-    }
-
-    public String getSemester() {
-        return semester;
-    }
-
-    public void setSemester(String semester) {
-        this.semester = semester;
-    }
-
-//    public void askingInfo(){
-//
-//        DateManager dateManager = new DateManager();
-//
-//        System.out.print("Enter the id:");
-//        String studentId = Main.scanner.nextLine();
-//
-//        System.out.print("Enter the name");
-//        String studentName = Main.scanner.nextLine();
-//
-//        System.out.print("Enter the dateOfBirth");
-//        String dateOfBirth = Main.scanner.nextLine();
-//
-//
-//        Student student = new Student(studentId,studentName,dateManager.convertDateString(dateOfBirth));
-//
-//        System.out.print("Enter the semester:");
-//        String semester = Main.scanner.nextLine();
-//
-//
-//        int courseCheck = 0;
-//        ArrayList<Course> courses = new ArrayList<>();
-//        while(courseCheck == 0){
-//            System.out.println("Enter the course");
-//            Course course;
-//            System.out.print("Please enter the  course id:");
-//            String courseId = Main.scanner.nextLine();
-//            System.out.print("Enter the name of the course: ");
-//            String courseName = Main.scanner.nextLine();
-//            System.out.print("Enter the numbers of credits:");
-//            int numberOfCredits = Main.scanner.nextInt();
-//            course = new Course(courseId,courseName,numberOfCredits);
-//
-//            Main.scanner.nextLine();
-//
-//            courses.add(course);
-//
-//            System.out.print("Do you want to add another course ? Y/n");
-//            String input = Main.scanner.nextLine();
-//            while(!input.equalsIgnoreCase("Y") && !input.equalsIgnoreCase("N")){
-//                System.out.print("Invalid input, please enter only Y/y or N/n");
-//                input = Main.scanner.nextLine();
-//            }
-//
-//            if (input.equalsIgnoreCase("N")){
-//                courseCheck = 1;
-//            }
-//        }
-//        StudentEnrollment studentEnrollment = new StudentEnrollment(student, courses, semester);
-//        this.studentEnrollments.add(studentEnrollment);
-//
-//        Main.scanner.close();
-//    }
 
     // Adding student enrollment for 1 semester
     // Case 1: Check if the student enrollment with that semester has been already in the system (Done)
@@ -105,32 +25,24 @@ public class StudentEnrollment implements StudentEnrollmentManager {
     @Override
     public void add() {
 
-        // Check if the student is on the system
-        String studentID = studentManager.validStudent();
         ArrayList<Course> studentCourse = new ArrayList<>();
 
-        //Main.scanner.nextLine();
+        // Check if the validation of user input
+        String studentID = studentManager.validStudent();
         String semester = validSemester();
+        String courseId = courseManager.validCourse();
 
         // Check if the student enrollment is already in system
-        while (checkStudentEnrollment(studentID, semester)){
+        while (checkStudentEnrollment(studentID, semester, courseId)){
             System.out.println("This enrollment is already on the system");
             System.out.println("Please try again");
             studentID = studentManager.validStudent();
             semester = validSemester();
+            courseId = courseManager.validCourse();
         }
 
-        // Check if the course is available in the system
+        // Asking if the user want to for another course for the same semester
         while (true){
-            String courseId = courseManager.validCourse();
-
-            // Checking if the student had already enrolled the course before
-            while(studentCourse.contains(courseManager.getCourseById(courseId))){
-                System.out.println("The course has been already enrolled");
-                System.out.println("Please try again");
-                courseId = courseManager.validCourse();
-            }
-
             studentCourse.add(courseManager.getCourseById(courseId));
             System.out.print("Do you want to add another course ? (Y/n) ");
             String input = Main.scanner.nextLine();
@@ -141,10 +53,34 @@ public class StudentEnrollment implements StudentEnrollmentManager {
             if (input.equalsIgnoreCase("n")){
                 break;
             }
+
+            while(true){
+                int flag = 0;
+                courseId = courseManager.validCourse();
+                for(Course course : studentCourse){
+                    if(course.getId().equals(courseId)){
+                        flag = 1;
+                        break;
+                    }
+                }
+                if(flag == 1){
+                    System.out.println("This course have already been added in this semester");
+                    System.out.println("Please try again");
+                } else {
+                    break;
+                }
+            }
+
+
+
         }
 
-        StudentEnrollment studentEnrollment = new StudentEnrollment(studentManager.getStudentById(studentID), studentCourse, semester);
-        this.studentEnrollments.add(studentEnrollment);
+        for (Course course : studentCourse){
+            StudentEnrollment studentEnrollment = new StudentEnrollment(studentManager.getStudentById(studentID), course, semester);
+            this.studentEnrollments.add(studentEnrollment);
+        }
+
+
     }
 
     // Delete the a student enrollment
@@ -155,55 +91,56 @@ public class StudentEnrollment implements StudentEnrollmentManager {
 
         String studentId = getStudentById();
         String semester = validSemester();
+        String courseId = courseManager.validCourse();
 
         // check if the student enrollment is on the system
-        while(!checkStudentEnrollment(studentId, semester)){
+        while(!checkStudentEnrollment(studentId, semester, courseId)){
             System.out.println("This student enrollment is not recognized by the system");
             System.out.println("Please try again");
             studentId = getStudentById();
             semester = validSemester();
+            courseId = courseManager.validCourse();
         }
 
         for (StudentEnrollment studentEnrollment : this.studentEnrollments) {
-            if(studentEnrollment.getStudent().getId().equalsIgnoreCase(studentId) && studentEnrollment.getSemester().equalsIgnoreCase(semester)){
+            if(studentEnrollment.getStudent().getId().equalsIgnoreCase(studentId) && studentEnrollment.getSemester().equalsIgnoreCase(semester) && studentEnrollment.getCourses().getId().equals(courseId)){
                 this.studentEnrollments.remove(studentEnrollment);
             }
         }
 
     }
 
-    // Adding Course for Student in Specific Semester
+    // Adding Model.Course for Model.Student in Specific Semester
     // Case 1: Check if the course had been enrolled before (Done)
     // TODO : CASE 2: Check if the the student have already enroll that semester
     public void addingCourseForStudent(){
+
         String studentId = studentManager.validStudent();
         String semester = validSemester();
-        displayCoursesOfStudent(studentId, semester);
+
 
         // check if the student enrollment is on the system
-        while(!checkStudentEnrollment(studentId, semester)){
+        while(!checkStudentEnrollment(studentId, semester, "")){
             System.out.println("This student enrollment is not recognized by the system");
             System.out.println("Please try again");
             studentId = getStudentById();
             semester = validSemester();
         }
 
+        displayCoursesOfStudent(studentId, semester);
+
         while (true){
             // Checking if the course id is in the system
             String courseStudent = courseManager.validCourse();
 
             // Checking if the student had already enrolled the course before
-            while (checkStudentRecord(studentId, courseStudent)) {
+            while (checkStudentEnrollment(studentId, semester, courseStudent)) {
                 System.out.println("The course have been already enrolled");
                 System.out.println("Please try again");
                 courseStudent = courseManager.validCourse();
             }
 
-            for(StudentEnrollment studentEnrollment: this.studentEnrollments){
-                if(studentEnrollment.getStudent().getId().equals(studentId) && studentEnrollment.getSemester().equals(semester)){
-                    studentEnrollment.courses.add(courseManager.getCourseById(courseStudent));
-                }
-            }
+            studentEnrollments.add(new StudentEnrollment(studentManager.getStudentById(studentId),courseManager.getCourseById(courseStudent), semester));
 
             System.out.print("Do you want to add another course (Y/n) ?: ");
             String input = Main.scanner.nextLine();
@@ -225,7 +162,7 @@ public class StudentEnrollment implements StudentEnrollmentManager {
         String semester = validSemester();
 
         // check if the student enrollment is on the system
-        while(!checkStudentEnrollment(studentId, semester)){
+        while(!checkStudentEnrollment(studentId, semester,"")){
             System.out.println("This student enrollment is not recognized by the system");
             System.out.println("Please try again");
             studentId = getStudentById();
@@ -238,15 +175,15 @@ public class StudentEnrollment implements StudentEnrollmentManager {
             String courseStudent = courseManager.validCourse();
 
             // Checking if the student had already enrolled the course before
-            while (!checkStudentRecord(studentId, courseStudent)) {
-                System.out.println("Student does not enroll this course before");
+            while (!checkStudentEnrollment(studentId, semester,courseStudent)) {
+                System.out.println("Model.Student does not enroll this course before");
                 System.out.println("Please try again");
                 courseStudent = courseManager.validCourse();
             }
 
             for(StudentEnrollment studentEnrollment: this.studentEnrollments){
                 if(studentEnrollment.getStudent().getId().equals(studentId) && studentEnrollment.getSemester().equals(semester)){
-                    studentEnrollment.courses.remove(courseManager.getCourseById(courseStudent));
+                    studentEnrollments.remove(studentEnrollment);
                 }
             }
 
@@ -264,40 +201,49 @@ public class StudentEnrollment implements StudentEnrollmentManager {
 
     }
 
-    // Display course list of that Student in specific semester
+    // Display course list of that Model.Student in specific semester
     public void displayCoursesOfStudent(String studentId, String semester){
         System.out.println("STUDENT ENROLLMENT IN " + semester.toUpperCase()+" OF "+studentId.toUpperCase());
         System.out.println("| " + String.format("%1$-18s", "COURSE_ID" + " | " + String.format("%1$-50s", "COURSE_NAME") + " | " + String.format("%1$18s", "COURSE_CREDITS") + " | "));
         for (StudentEnrollment studentEnrollment : this.studentEnrollments) {
             if(studentEnrollment.getStudent().getId().equalsIgnoreCase(studentId) && studentEnrollment.getSemester().equalsIgnoreCase(semester)){
-                for (Course course : studentEnrollment.getCourses()) {
-                    System.out.println("| " + String.format("%1$-9s", course.getId()) + " | " + String.format("%1$-50s", course.getName()) + " | " + String.format("%1$18s", course.getNumber_of_credits()) + " | ");
-                }
+                System.out.println("| " + String.format("%1$-9s", studentEnrollment.getCourses().getId()) + " | " + String.format("%1$-50s", studentEnrollment.getCourses().getName()) + " | " + String.format("%1$18s", studentEnrollment.getCourses().getNumber_of_credits()) + " | ");
             }
         }
     }
 
-    // Check if the course is in the student enrollment
-    public boolean checkStudentRecord(String studentId, String courseId){
-        for (StudentEnrollment studentEnrollment : this.studentEnrollments){
-            if (studentEnrollment.getStudent().getId().equalsIgnoreCase(studentId)){
-                for(Course course : studentEnrollment.getCourses()){
-                    if(course.getId().equals(courseId)){
-                        return true;
-                    }
-                }
-            }
-        }
-        return false;
-    }
+//    // Check if the course is in the student enrollment
+//    public boolean checkStudentRecord(String studentId, String courseId){
+//        for (Model.StudentEnrollment studentEnrollment : this.studentEnrollments){
+//            if (studentEnrollment.getStudent().getId().equalsIgnoreCase(studentId)){
+//                for(Model.Course course : studentEnrollment.getCourses()){
+//                    if(course.getId().equals(courseId)){
+//                        return true;
+//                    }
+//                }
+//            }
+//        }
+//        return false;
+//    }
 
     // Check if the student enrollment(by id and semester) is already in the system
-    public boolean checkStudentEnrollment(String studentId, String semester){
-        for (StudentEnrollment studentEnrollment : this.studentEnrollments){
-            if (studentEnrollment.getStudent().getId().equalsIgnoreCase(studentId) && studentEnrollment.getSemester().equalsIgnoreCase(semester)){
-                return true;
+    public boolean checkStudentEnrollment(String studentId, String semester, String courseId){
+
+        if (courseId.equals("")){
+            for (StudentEnrollment studentEnrollment : this.studentEnrollments){
+                if (studentEnrollment.getStudent().getId().equalsIgnoreCase(studentId) && studentEnrollment.getSemester().equalsIgnoreCase(semester)){
+                    return true;
+                }
             }
         }
+        else {
+            for (StudentEnrollment studentEnrollment : this.studentEnrollments){
+                if (studentEnrollment.getStudent().getId().equalsIgnoreCase(studentId) && studentEnrollment.getSemester().equalsIgnoreCase(semester) && studentEnrollment.getCourses().getId().equals(courseId)){
+                    return true;
+                }
+            }
+        }
+
         return false;
     }
 
@@ -308,11 +254,11 @@ public class StudentEnrollment implements StudentEnrollmentManager {
         String semester = checkSemester();
         int flag = 0;
 
-        System.out.println("Student ID" + studentId);
+        System.out.println("Model.Student ID" + studentId);
         System.out.println("Semester " + semester);
-        System.out.println("Course list");
+        System.out.println("Model.Course list");
         for (StudentEnrollment studentEnrollment: studentEnrollments) {
-            if (studentEnrollment.getStudentById().equals(studentId) && studentEnrollment.getSemester().equals(semester)){
+            if (studentEnrollment.getStudent().getId().equals(studentId) && studentEnrollment.getSemester().equals(semester)){
                 System.out.println(studentEnrollment.getCourses());
                 flag = 1;
             }
@@ -327,49 +273,90 @@ public class StudentEnrollment implements StudentEnrollmentManager {
     // TODO: Must included semester and allowed to save CSV
     public void getStudentByCourse(){
         DateManager dateManager = new DateManager();
+        ArrayList<Student> students = new ArrayList<>();
 
         // Check if any student has enroll this course
         String studentCourse = checkCourse();
+        String semester = validSemester();
 
         System.out.println("---------------------------------------------------------------");
-        System.out.println("LIST OF STUDENTS ENROLL "+ studentCourse.toUpperCase()+" COURSE");
+        System.out.println("LIST OF STUDENTS ENROLL "+ studentCourse.toUpperCase()+" COURSE IN SEMESTER "+ semester);
         System.out.println("---------------------------------------------------------------------------------------");
         System.out.println("| " + String.format("%1$-18s", "STUDENT_ID" + " | " + String.format("%1$-50s", "STUDENT_NAME") + " | " + String.format("%1$18s", "STUDENT_DOB") + " | "));
 
-        int flag = 0;
         for (StudentEnrollment studentEnrollment: studentEnrollments) {
-            for (Course studentCourseI : studentEnrollment.getCourses()){
-                if (studentCourseI.getId().equals(studentCourse)) {
-                    flag = 1;
-                    break;
-                }
+
+            if (studentEnrollment.getCourses().getId().equals(studentCourse) && studentEnrollment.getSemester().equals(semester)) {
+                System.out.println("| " + String.format("%1$-10s", studentEnrollment.getStudent().getId()) + " | " + String.format("%1$-50s", studentEnrollment.getStudent().getName()) + " | " + String.format("%1$18s", studentEnrollment.getStudent().getBirthdate()) + " | ");
+                students.add(studentEnrollment.getStudent());
             }
-            if (flag == 1){
-                System.out.println("| " + String.format("%1$-10s", studentEnrollment.getStudent().getId()) + " | " + String.format("%1$-50s", studentEnrollment.getStudent().getName()) + " | " + String.format("%1$18s", dateManager.convertDateToString(studentEnrollment.getStudent().getBirthdate())) + " | ");
-            }
+
         }
         System.out.println("---------------------------------------------------------------------------------------");
         System.out.println();
+
+        System.out.print("Do you want to save the record in to csv file (Y/n) ?");
+        String input = Main.scanner.nextLine();
+        if(input.equalsIgnoreCase("Y")){
+            String textFileName = "ListOfStudentsEnrollIn_"+studentCourse+"_"+semester+".csv";
+            ImportToCSV(students, textFileName, students.get(0).propertyStudent);
+        }
+
     }
 
     // Display the course by student
-    // TODO: Must included semester
+    // TODO: Must included semester, check the list is empty
     public void getCourseByStudent(){
         String studentId = getStudentById();
+        String semester = checkSemester();
+
+        ArrayList<Course> courses = new ArrayList<>();
+
         System.out.println("-------------------------------------------------------------------------");
-        System.out.println("LIST OF COURSES THAT STUDENT WITH ID"+studentId.toUpperCase()+" ENROLLED");
+        System.out.println("LIST OF COURSES THAT STUDENT WITH ID"+studentId.toUpperCase()+" ENROLLED IN SEMESTER " + semester);
         System.out.println("---------------------------------------------------------------------------------------");
         System.out.println("| " + String.format("%1$-18s", "COURSE_ID" + " | " + String.format("%1$-50s", "COURSE_NAME") + " | " + String.format("%1$18s", "COURSE_CREDITS") + " | "));
 
         for (StudentEnrollment studentEnrollment: studentEnrollments) {
-            if(studentEnrollment.getStudent().getId().equals(studentId)){
-                for (Course course : studentEnrollment.getCourses()){
-                    System.out.println("| " + String.format("%1$-9s", course.getId()) + " | " + String.format("%1$-50s", course.getName()) + " | " + String.format("%1$18s", course.getNumber_of_credits()) + " | ");
-                }
+            if(studentEnrollment.getStudent().getId().equals(studentId) && studentEnrollment.getSemester().equals(semester)){
+                courses.add(studentEnrollment.getCourses());
+                System.out.println("| " + String.format("%1$-9s", studentEnrollment.getCourses().getId()) + " | " + String.format("%1$-50s", studentEnrollment.getCourses().getName()) + " | " + String.format("%1$18s", studentEnrollment.getCourses().getNumber_of_credits()) + " | ");
             }
         }
         System.out.println("---------------------------------------------------------------------------------------");
         System.out.println();
+
+        System.out.print("Do you want to save the record in to csv file (Y/n) ?");
+        String input = Main.scanner.nextLine();
+        if(input.equalsIgnoreCase("Y")){
+            String textFileName = "ListOfCoursesEnrollBy_"+studentId+"_"+semester+".csv";
+            ImportToCSV(courses, textFileName, courses.get(0).propertyCourse);
+        }
+
+
+    }
+
+    private void ImportToCSV(ArrayList<?> list, String textFileName, List<String> listOfProperties) {
+        try {
+            FileWriter fileWriter = new FileWriter(new File(textFileName));
+
+            String nameCol = String.join(",",listOfProperties);
+            fileWriter.append(nameCol);
+            fileWriter.append("\n");
+
+            for (Object element: list){
+                if(element instanceof Student || element instanceof Course){
+                    fileWriter.append(((AdditionService) element).toCSV());
+                }
+            }
+
+            fileWriter.flush();
+            fileWriter.close();
+
+
+        } catch (IOException e) {
+            System.out.println("Cannot create file");;
+        }
     }
 
     // Display all the course in the semester
@@ -378,6 +365,7 @@ public class StudentEnrollment implements StudentEnrollmentManager {
     public void getCourseBySemester(){
         // Check if in that semester have any course enrollment
         String semester = checkSemester();
+        ArrayList<Course> courses = new ArrayList<>();
         System.out.println("-----------------------------------------------------");
         System.out.println("LIST OF COURSES IN SEMESTER "+semester.toUpperCase());
         System.out.println("---------------------------------------------------------------------------------------");
@@ -386,29 +374,37 @@ public class StudentEnrollment implements StudentEnrollmentManager {
         ArrayList<Course> listCourses= new ArrayList<>();
 
         for (StudentEnrollment studentEnrollment : studentEnrollments){
-            if(studentEnrollment.getSemester().equals(checkCourse())){
-                listCourses.addAll(studentEnrollment.getCourses());
+            if(studentEnrollment.getSemester().equals(semester)){
+                listCourses.add(studentEnrollment.getCourses());
             }
         }
 
         // Generate to get unique value
         HashSet<Course> uniqueCourseList = new HashSet(listCourses);
         for(Course course : uniqueCourseList){
+            courses.add(course);
             System.out.println("| " + String.format("%1$-9s", course.getId()) + " | " + String.format("%1$-50s", course.getName()) + " | " + String.format("%1$18s", course.getNumber_of_credits()) + " | ");
         }
         System.out.println("---------------------------------------------------------------------------------------");
         System.out.println();
 
+        System.out.print("Do you want to save the record in to csv file (Y/n) ?");
+        String input = Main.scanner.nextLine();
+        if(input.equalsIgnoreCase("Y")){
+            String textFileName = "ListOfCoursesEnrollIn_"+semester+".csv";
+            ImportToCSV(courses, textFileName, courses.get(0).propertyCourse);
+        }
+
     }
 
-    // Two option: List the course by student and List the student by Course
+    // Two option: List the course by student and List the student by Model.Course
     // TODO: Bring all the menu of display in the Main.class to here
     @Override
     public void getOne() {
         // Get student (list all the course by student) or course (list all the student by course)
-       getStudentByCourse();
-       getCourseByStudent();
-       getCourseBySemester();
+        getStudentByCourse();
+        getCourseByStudent();
+        getCourseBySemester();
     }
 
     // TODO: Modified to make it user friendly (Not yet checked)
@@ -420,9 +416,9 @@ public class StudentEnrollment implements StudentEnrollmentManager {
         System.out.println("| " + String.format("%1$-18s", "STUDENT_ID" + " | " + String.format("%1$-50s", "COURSE_ID") + " | " + String.format("%1$18s", "SEMESTER") + " | "));
 
         for (StudentEnrollment studentEnrollment: this.studentEnrollments){
-            for (Course course : studentEnrollment.getCourses()){
-                System.out.println("| " + String.format("%1$-18s", studentEnrollment.getStudent().getId() + " | " + String.format("%1$-50s", course.getId()) + " | " + String.format("%1$18s", studentEnrollment.getSemester()) + " | "));
-            }
+
+            System.out.println("| " + String.format("%1$87s", studentEnrollment.getStudent().getId() + " | " + String.format("%1$-50s", studentEnrollment.getCourses().getId()) + " | " + String.format("%1$18s", studentEnrollment.getSemester()) + " | "));
+
         }
     }
 
@@ -452,24 +448,7 @@ public class StudentEnrollment implements StudentEnrollmentManager {
 
     // Check if the semester appear in the enrollment list
     public String checkSemester(){
-        int flag = 0;
-        String studentSemester = validSemester();
-        while (flag == 0){
-            System.out.print("Please enter the student id");
-            studentSemester = Main.scanner.nextLine();
-
-            for (StudentEnrollment studentEnrollment : studentEnrollments){
-                if ((studentEnrollment.getSemester().equals(studentSemester))) {
-                    flag = 1;
-                    break;
-                }
-            }
-
-            if(flag != 1){
-                System.out.println("Please enter again");
-            }
-        }
-        return studentSemester;
+        return validSemester();
     }
 
     // Check if the course id is in the enrollment list
@@ -481,12 +460,12 @@ public class StudentEnrollment implements StudentEnrollmentManager {
             studentCourse = Main.scanner.nextLine();
 
             for (StudentEnrollment studentEnrollment : studentEnrollments){
-                for(Course studentCourseI : studentEnrollment.getCourses()){
-                    if(studentCourseI.getId().equals(studentCourse)){
-                        flag = 1;
-                        break;
-                    }
+
+                if(studentEnrollment.getCourses().getId().equals(studentCourse)){
+                    flag = 1;
+                    break;
                 }
+
             }
 
             if(flag != 1){
@@ -500,7 +479,7 @@ public class StudentEnrollment implements StudentEnrollmentManager {
     public String validSemester(){
 
         while(true){
-            System.out.println("Please enter the semester: ");
+            System.out.print("Please enter the semester: ");
             String semester = Main.scanner.nextLine();
             Pattern patternSemester = Pattern.compile("2021(A|B|C)");
 
