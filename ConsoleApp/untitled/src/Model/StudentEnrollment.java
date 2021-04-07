@@ -1,12 +1,9 @@
 package Model;
 
-import Model.Course;
-import Model.Student;
-
 import java.util.Arrays;
 import java.util.List;
 
-public class StudentEnrollment implements AdditionService {
+public class StudentEnrollment implements Model {
     private Student student;
     private Course course;
     private String semester;
@@ -47,7 +44,28 @@ public class StudentEnrollment implements AdditionService {
     }
 
     @Override
+    public String toString() {
+        return "StudentEnrollment{" +
+                "student=" + student +
+                ", course=" + course +
+                ", semester='" + semester + '\'' +
+                ", propertyStudentEnrollment=" + propertyStudentEnrollment +
+                '}';
+    }
+
+    @Override
     public String toCSV() {
         return this.student.getId()+","+this.course.getId()+","+this.semester+"\n";
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        StudentEnrollment that = (StudentEnrollment) o;
+        return course.equals(that.course) &&
+                student.equals(that.student) &&
+                semester.equals(that.semester);
+    }
+
 }

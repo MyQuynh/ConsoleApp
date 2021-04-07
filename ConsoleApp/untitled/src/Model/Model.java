@@ -1,5 +1,5 @@
 package Model;
 
-public interface AdditionService {
+public interface Model {
     public String toCSV();
 }

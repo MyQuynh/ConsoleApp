@@ -1,11 +1,10 @@
 package Model;
 
 import java.util.Arrays;
-import java.util.Date;
-import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 
-public class Student implements AdditionService {
+public class Student implements Model {
     private String id;
     private String name;
     private String birthdate;
@@ -55,5 +54,20 @@ public class Student implements AdditionService {
     @Override
     public String toCSV() {
         return this.getId()+","+this.getName()+","+this.getBirthdate()+"\n";
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Student that = (Student) o;
+        return id.equals(that.id) &&
+                name.equals(that.name) &&
+                birthdate.equals(that.birthdate);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, birthdate);
     }
 }
