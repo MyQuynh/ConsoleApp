@@ -19,7 +19,6 @@ public class StudentManagerTest {
     @Rule
     public final TextFromStandardInputStream systemInMock = TextFromStandardInputStream.emptyStandardInputStream();
 
-
     @Test
     public void getStudents() {
     }

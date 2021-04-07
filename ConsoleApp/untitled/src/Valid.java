@@ -2,7 +2,7 @@ import java.util.InputMismatchException;
 
 public interface Valid {
 
-    public default int checkInput(int min, int max){
+    default int checkInput(int min, int max){
         int option = 0;
 
         while (true) {
