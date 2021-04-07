@@ -494,17 +494,16 @@ public class StudentMemoryManager implements StudentEnrollmentManager, Valid {
 
         StudentEnrollment studentEnrollment = new StudentEnrollment(studentManager.getStudentById(studentID),courseManager.getCourseByIdAndSemester(courseId, semester), semester);
 
-        System.out.println("-------------------------------");
+        System.out.println("-----------------------------------------");
         System.out.println("INFORMATION ABOUT THE STUDENT ENROLLMENT");
-        System.out.println("----------------------------------------------------------------------------------------------------");
+        System.out.println("-------------------------------------------------------------------------------------------------------------");
         System.out.println("STUDENT INFORMATION");
         System.out.println("| " + String.format("%1$-18s", "STUDENT_ID" + " | " + String.format("%1$-50s", "STUDENT_NAME") + " | " + String.format("%1$18s", "STUDENT_DOB") + " |"));
         System.out.println("| " + String.format("%1$-10s", studentEnrollment.getStudent().getId()) + " | " + String.format("%1$-50s", studentEnrollment.getStudent().getName()) + " | " + String.format("%1$18s", studentEnrollment.getStudent().getBirthdate()) + " |");
         System.out.println("COURSE INFORMATION");
-        System.out.println("| " + String.format("%1$-18s", "COURSE_ID" + " | " + String.format("%1$-50s", "COURSE_NAME") + " | " + String.format("%1$18s", "COURSE_CREDITS") + " | " + String.format("%1$18s", "SEMESTER") +" |"));
-        System.out.println("| " + String.format("%1$-9s", studentEnrollment.getCourses().getId()) + " | " + String.format("%1$-50s", studentEnrollment.getCourses().getName()) + " | " + String.format("%1$18s", studentEnrollment.getCourses().getNumber_of_credits()) +" | " + String.format("%1$18s", studentEnrollment.getCourses().getSemester()) + " |");
-        System.out.println("----------------------------------------------------------------------------------------------------");
-
+        System.out.println("| " + String.format("%1$106s", "COURSE_ID " + " | " + String.format("%1$-50s", "COURSE_NAME") + " | " + String.format("%1$18s", "COURSE_CREDITS") + " | " + String.format("%1$18s", "SEMESTER") +" |"));
+        System.out.println("| " + String.format("%1$-10s", studentEnrollment.getCourses().getId()) + " | " + String.format("%1$-50s", studentEnrollment.getCourses().getName()) + " | " + String.format("%1$18s", studentEnrollment.getCourses().getNumber_of_credits()) +" | " + String.format("%1$18s", studentEnrollment.getCourses().getSemester()) + " |");
+        System.out.println("-------------------------------------------------------------------------------------------------------------");
     }
 
     // Modified to make it user friendly (Not yet checked) (Done)

@@ -242,6 +242,10 @@ public class StudentMemoryManagerTest {
 
     @Test
     public void getOne() {
+        StudentMemoryManager studentMemoryManager = new StudentMemoryManager();
+        studentMemoryManager.createList();
+        systemInMock.provideLines("S3836322","2021A","ISY3414");
+        studentMemoryManager.getOne();
     }
 
     @Test
