@@ -12,7 +12,6 @@ public class Course implements Model {
 
     public List<String> propertyCourse = Arrays.asList("COURSE_ID", "COURSE_NAME", "NUMBER_OF_CREDITS","SEMESTER");
 
-    public Course(){}
 
     public Course(String id, String name, int number_of_credits, String semester) {
         this.id = id;

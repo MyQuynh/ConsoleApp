@@ -13,31 +13,11 @@ public class CourseManager {
     private ArrayList<Course> coursesList = new ArrayList<>();
 
     public CourseManager(){
-//        Course course1 = new Course("COSC2083","Introduction to Information Technology", 12);
-//        Course course2 = new Course("COSC2429","Introduction to Programming", 12);
-//        Course course3 = new Course("ISY3414","Practical Database Concept", 12);
-//        Course course4 = new Course("COSC2500", "Intro to Computer Systems", 12);
-//        Course course5 = new Course("COSC2534","Building IT Systems", 12);
-//        Course course6 = new Course("COSC2652", "User-central Design", 12);
-//        Course course7 = new Course("COSC2430", "Web Programming", 12);
-//        Course course8 = new Course("COSC2081","Programming 1", 12);
-//        Course course9 = new Course("COSC2440", "Software Architecture: Design and Implementation", 12);
-//        Course course10 = new Course("COSC2539","Security in Computing and Information Technology", 12);
-//
-//        this.coursesList.add(course1);
-//        this.coursesList.add(course2);
-//        this.coursesList.add(course3);
-//        this.coursesList.add(course4);
-//        this.coursesList.add(course5);
-//        this.coursesList.add(course6);
-//        this.coursesList.add(course7);
-//        this.coursesList.add(course8);
-//        this.coursesList.add(course9);
-//        this.coursesList.add(course10);
+
         try {
             readFile("course.csv");
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("Cannot read file");;
         }
     }
 

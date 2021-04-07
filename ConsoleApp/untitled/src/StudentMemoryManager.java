@@ -159,22 +159,6 @@ public class StudentMemoryManager implements StudentEnrollmentManager, Valid {
             }
         }
 
-//        String studentId = studentManager.validStudent();
-//        String semester = validSemester();
-//        String courseId = courseManager.validCourse();
-//
-//        // check if the student enrollment is on the system
-//        while(!checkStudentEnrollment(studentId, semester, courseId)){
-//            System.out.println("This student enrollment is not recognized by the system");
-//            System.out.println("Please try again");
-//            studentId = getStudentById();
-//            semester = validSemester();
-//            courseId = courseManager.validCourse();
-//        }
-//
-//        StudentEnrollment studentEnrollmentRemove = new StudentEnrollment(studentManager.getStudentById(studentId), courseManager.getCourseById(courseId), semester);
-//        this.studentEnrollments.remove(studentEnrollmentRemove);
-
     }
 
     @Override
@@ -716,8 +700,6 @@ public class StudentMemoryManager implements StudentEnrollmentManager, Valid {
     }
 
     // Getter and setter
-
-
     public ArrayList<StudentEnrollment> getStudentEnrollments() {
         return studentEnrollments;
     }

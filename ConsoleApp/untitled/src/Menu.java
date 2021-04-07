@@ -32,7 +32,7 @@ public class Menu implements Valid {
     }
 
     public int updateMenu(){
-            // Making the interface for update enrollment menu
+        // Making the interface for update enrollment menu
         System.out.println("---------------------------------------");
         System.out.println("UPDATE ENROLLMENT MENU");
         System.out.println("1. Adding a new course for student");
@@ -44,7 +44,7 @@ public class Menu implements Valid {
     }
 
     public int displayMenu(){
-            // Making the interface for update enrollment menu
+        // Making the interface for update enrollment menu
         System.out.println("---------------------------------------");
         System.out.println("DISPLAY ENROLLMENT MENU");
         System.out.println("1. Display all courses by student");
