@@ -10,6 +10,9 @@ import org.junit.jupiter.api.BeforeEach;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Scanner;
 
 import static org.junit.Assert.*;
@@ -173,6 +176,12 @@ public class StudentMemoryManagerTest {
 
     @Test
     public void displayCoursesOfStudent() {
+        String studentId = "S3836322";
+        String semester = "2021A";
+        StudentMemoryManager studentMemoryManager = new StudentMemoryManager();
+        studentMemoryManager.createList();
+        studentMemoryManager.displayCoursesOfStudent(studentId,semester);
+        assertTrue(true);
     }
 
     @Test
@@ -246,6 +255,13 @@ public class StudentMemoryManagerTest {
         studentMemoryManager.createList();
         systemInMock.provideLines("S3836322","2021A","ISY3414");
         studentMemoryManager.getOne();
+    }
+
+    @Test
+    public void display(){
+        StudentMemoryManager studentMemoryManager = new StudentMemoryManager();
+        systemInMock.provideLines("4");
+        studentMemoryManager.display();
     }
 
     @Test
@@ -328,4 +344,34 @@ public class StudentMemoryManagerTest {
         studentMemoryManager.createList();
         assertTrue(studentMemoryManager.getStudentEnrollments().size() > 0);
     }
+
+    @Test
+    public void getStudentEnrollments(){
+        // Assume that we don't add anthing to the list, so the le of the list should be 0
+        StudentMemoryManager studentMemoryManager = new StudentMemoryManager();
+        assertEquals(studentMemoryManager.getStudentEnrollments().size(),0);
+    }
+
+    @Test
+    public void ImportToCSV(){
+        List<String> propertyCourse = Arrays.asList("COURSE_ID", "COURSE_NAME", "NUMBER_OF_CREDITS","SEMESTER");
+        ArrayList<Course> courseArrayList = new ArrayList<>();
+        Course course1 = new Course("COSC2083","Introduction to Information Technology", 12, "2021A");
+        Course course2 = new Course("COSC2429","Introduction to Programming", 12,"2021A");
+
+        courseArrayList.add(course1);
+        courseArrayList.add(course2);
+
+        StudentMemoryManager studentMemoryManager = new StudentMemoryManager();
+        studentMemoryManager.ImportToCSV(courseArrayList,"test123.csv",propertyCourse);
+        // Check if the file be created
+        File f = new File("test123.csv");
+        if(f.exists() && !f.isDirectory()) {
+            assertTrue(true);
+        } else {
+            assertFalse(false);
+        }
+    }
+
+
 }

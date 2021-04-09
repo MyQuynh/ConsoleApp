@@ -42,14 +42,14 @@ public class Student implements Model {
         this.birthdate = birthdate;
     }
 
-    @Override
-    public String toString() {
-        return "Model.Student{" +
-                "id='" + id + '\'' +
-                ", name='" + name + '\'' +
-                ", birthdate=" + birthdate +
-                '}';
-    }
+//    @Override
+//    public String toString() {
+//        return "Model.Student{" +
+//                "id='" + id + '\'' +
+//                ", name='" + name + '\'' +
+//                ", birthdate=" + birthdate +
+//                '}';
+//    }
 
     @Override
     public String toCSV() {

@@ -5,6 +5,7 @@ import org.junit.Test;
 import org.junit.contrib.java.lang.system.TextFromStandardInputStream;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 import static org.junit.Assert.*;
@@ -32,11 +33,17 @@ public class CourseManagerTest {
     }
 
     @Test
-    public void getCoursesList() {
-    }
+    public void getAndSetCoursesList() {
+        CourseManager courseManager = new CourseManager();
+        ArrayList<Course> courseArrayList = new ArrayList<>();
+        Course course1 = new Course("COSC2083","Introduction to Information Technology", 12, "2021A");
+        Course course2 = new Course("COSC2429","Introduction to Programming", 12,"2021A");
 
-    @Test
-    public void setCoursesList() {
+        courseArrayList.add(course1);
+        courseArrayList.add(course2);
+        courseManager.setCoursesList(courseArrayList);
+        assertEquals(courseArrayList, courseManager.getCoursesList());
+
     }
 
     @Test

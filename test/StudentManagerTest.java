@@ -1,3 +1,4 @@
+import Model.Course;
 import Model.Student;
 import org.junit.Before;
 import org.junit.Rule;
@@ -5,6 +6,7 @@ import org.junit.Test;
 import org.junit.contrib.java.lang.system.TextFromStandardInputStream;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 import static org.junit.Assert.*;
@@ -20,11 +22,17 @@ public class StudentManagerTest {
     public final TextFromStandardInputStream systemInMock = TextFromStandardInputStream.emptyStandardInputStream();
 
     @Test
-    public void getStudents() {
-    }
+    public void getAndSetStudent() {
+        StudentManager studentManager = new StudentManager();
+        ArrayList<Student> studentArrayList = new ArrayList<>();
+        Student student1 = new Student("S3836322","Ngo My Quynh","08/03/2001");
+        Student student2 = new Student("S3817852","Nguyen Thanh Thien","06/11/2000");
 
-    @Test
-    public void setStudents() {
+        studentArrayList.add(student1);
+        studentArrayList.add(student2);
+        studentManager.setStudents(studentArrayList);
+        assertEquals(studentArrayList, studentManager.getStudents());
+
     }
 
     @Test
@@ -72,4 +80,5 @@ public class StudentManagerTest {
             fail();
         }
     }
+
 }

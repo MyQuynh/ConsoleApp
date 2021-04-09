@@ -137,10 +137,4 @@ public class CourseManager {
         csvReader.close();
     }
 
-    @Override
-    public String toString() {
-        return "CourseManager{" +
-                "coursesList=" + coursesList +
-                '}';
-    }
 }

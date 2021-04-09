@@ -2,6 +2,7 @@ package Model;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 public class StudentEnrollment implements Model {
     private Student student;
@@ -43,15 +44,15 @@ public class StudentEnrollment implements Model {
         this.semester = semester;
     }
 
-    @Override
-    public String toString() {
-        return "StudentEnrollment{" +
-                "student=" + student +
-                ", course=" + course +
-                ", semester='" + semester + '\'' +
-                ", propertyStudentEnrollment=" + propertyStudentEnrollment +
-                '}';
-    }
+//    @Override
+//    public String toString() {
+//        return "StudentEnrollment{" +
+//                "student=" + student +
+//                ", course=" + course +
+//                ", semester='" + semester + '\'' +
+//                ", propertyStudentEnrollment=" + propertyStudentEnrollment +
+//                '}';
+//    }
 
     @Override
     public String toCSV() {
@@ -68,4 +69,8 @@ public class StudentEnrollment implements Model {
                 semester.equals(that.semester);
     }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(student, course, semester);
+    }
 }

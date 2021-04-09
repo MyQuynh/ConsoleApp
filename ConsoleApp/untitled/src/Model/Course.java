@@ -53,16 +53,6 @@ public class Course implements Model {
     }
 
     @Override
-    public String toString() {
-        return "Course{" +
-                "id='" + id + '\'' +
-                ", name='" + name + '\'' +
-                ", number_of_credits=" + number_of_credits +
-                ", semester='" + semester + '\'' +
-                '}';
-    }
-
-    @Override
     public String toCSV() {
         return this.getId()+","+this.getName()+","+this.getNumber_of_credits()+","+this.getSemester()+"\n";
     }

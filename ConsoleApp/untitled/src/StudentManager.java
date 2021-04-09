@@ -127,11 +127,4 @@ public class StudentManager {
         csvReader.close();
     }
 
-
-    @Override
-    public String toString() {
-        return "StudentManager{" +
-                "students=" + students +
-                '}';
-    }
 }

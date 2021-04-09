@@ -377,7 +377,7 @@ public class StudentMemoryManager implements StudentEnrollmentManager, Valid {
 
     }
 
-    private void ImportToCSV(ArrayList<?> list, String textFileName, List<String> listOfProperties) {
+    public void ImportToCSV(ArrayList<?> list, String textFileName, List<String> listOfProperties) {
         try {
             FileWriter fileWriter = new FileWriter(new File(textFileName));
 
@@ -703,4 +703,5 @@ public class StudentMemoryManager implements StudentEnrollmentManager, Valid {
     public ArrayList<StudentEnrollment> getStudentEnrollments() {
         return studentEnrollments;
     }
+
 }
