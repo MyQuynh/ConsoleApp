@@ -337,6 +337,11 @@ public class StudentMemoryManager implements StudentEnrollmentManager, Valid {
 
         System.out.print("Do you want to save the record in to csv file (Y/n) ?");
         String input = Main.scanner.nextLine();
+        while(!input.equalsIgnoreCase("Y") && !input.equalsIgnoreCase("N")){
+            System.out.print("Invalid input, please enter only Y/y or N/n");
+            input = Main.scanner.nextLine();
+            System.out.println();
+        }
         if(input.equalsIgnoreCase("Y")){
             String textFileName = "ListOfStudentsEnrollIn_"+studentCourse+"_"+semester+".csv";
             ImportToCSV(students, textFileName, students.get(0).propertyStudent);
@@ -348,7 +353,7 @@ public class StudentMemoryManager implements StudentEnrollmentManager, Valid {
     // Must included semester, check the list is empty (Done)
     public void getCourseByStudent(){
         String studentId = getStudentById();
-        String semester = checkSemester();
+        String semester = validSemester();
 
         ArrayList<Course> courses = new ArrayList<>();
 
@@ -369,6 +374,11 @@ public class StudentMemoryManager implements StudentEnrollmentManager, Valid {
 
         System.out.print("Do you want to save the record in to csv file (Y/n) ?");
         String input = Main.scanner.nextLine();
+        while(!input.equalsIgnoreCase("Y") && !input.equalsIgnoreCase("N")){
+            System.out.print("Invalid input, please enter only Y/y or N/n");
+            input = Main.scanner.nextLine();
+            System.out.println();
+        }
         if(input.equalsIgnoreCase("Y")){
             String textFileName = "ListOfCoursesEnrollBy_"+studentId+"_"+semester+".csv";
             ImportToCSV(courses, textFileName, courses.get(0).propertyCourse);
@@ -406,7 +416,7 @@ public class StudentMemoryManager implements StudentEnrollmentManager, Valid {
     // Allowed to save to csv file (done)
     public void getCourseBySemester(){
         // Check if in that semester have any course enrollment
-        String semester = checkSemester();
+        String semester = validSemester();
         ArrayList<Course> courses = new ArrayList<>();
         System.out.println("-----------------------------------------------------");
         System.out.println("LIST OF COURSES IN SEMESTER "+semester.toUpperCase());
@@ -433,6 +443,11 @@ public class StudentMemoryManager implements StudentEnrollmentManager, Valid {
 
         System.out.print("Do you want to save the record in to csv file (Y/n) ?");
         String input = Main.scanner.nextLine();
+        while(!input.equalsIgnoreCase("Y") && !input.equalsIgnoreCase("N")){
+            System.out.print("Invalid input, please enter only Y/y or N/n");
+            input = Main.scanner.nextLine();
+            System.out.println();
+        }
         if(input.equalsIgnoreCase("Y")){
             String textFileName = "ListOfCoursesEnrollIn_"+semester+".csv";
             ImportToCSV(courses, textFileName, courses.get(0).propertyCourse);
@@ -531,10 +546,10 @@ public class StudentMemoryManager implements StudentEnrollmentManager, Valid {
         return studentId;
     }
 
-    // Check if the semester appear in the enrollment list
-    public String checkSemester(){
-        return validSemester();
-    }
+//    // Check if the semester appear in the enrollment list
+//    public String checkSemester(){
+//        return validSemester();
+//    }
 
     // Check if the course id is in the enrollment list
     public String checkCourse(){

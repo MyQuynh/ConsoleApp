@@ -77,12 +77,12 @@ public class CourseManagerTest {
         assertTrue(true);
     }
 
-    @Test
-    public void listOfCourses() {
-        CourseManager courseManager = new CourseManager();
-        courseManager.listOfCourses();
-        assertTrue(true);
-    }
+//    @Test
+//    public void listOfCourses() {
+//        CourseManager courseManager = new CourseManager();
+//        courseManager.listOfCourses();
+//        assertTrue(true);
+//    }
 
     @Test
     public void readFile() {

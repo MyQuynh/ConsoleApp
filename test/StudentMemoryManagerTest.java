@@ -268,6 +268,7 @@ public class StudentMemoryManagerTest {
     // Testing for display all the student enrollments
     public void getAll() {
         StudentMemoryManager studentMemoryManager = new StudentMemoryManager();
+        studentMemoryManager.createList();
         studentMemoryManager.getAll();
     }
 
@@ -282,14 +283,14 @@ public class StudentMemoryManagerTest {
         assertEquals(studentId,"S3836322");
     }
 
-    @Test
-    public void checkSemester() {
-        // Case 1: Check if the semester having the student enroll
-        StudentMemoryManager studentMemoryManager = new StudentMemoryManager();
-        systemInMock.provideLines("2022A","2021A");
-        String semester = studentMemoryManager.checkSemester();
-        assertEquals(semester,"2021A");
-    }
+//    @Test
+//    public void checkSemester() {
+//        // Case 1: Check if the semester having the student enroll
+//        StudentMemoryManager studentMemoryManager = new StudentMemoryManager();
+//        systemInMock.provideLines("2022A","2021A");
+//        String semester = studentMemoryManager.checkSemester();
+//        assertEquals(semester,"2021A");
+//    }
 
     @Test
     public void checkCourse() {
@@ -365,6 +366,8 @@ public class StudentMemoryManagerTest {
         StudentMemoryManager studentMemoryManager = new StudentMemoryManager();
         studentMemoryManager.ImportToCSV(courseArrayList,"test123.csv",propertyCourse);
         // Check if the file be created
+        // TODO: check student enrollment if it already enroll 4 course
+        // TODO: check the data in the file
         File f = new File("test123.csv");
         if(f.exists() && !f.isDirectory()) {
             assertTrue(true);

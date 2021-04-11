@@ -94,31 +94,31 @@ public class CourseManager {
         System.out.println();
     }
 
-    public void listOfCourses(){
-        // Creating a list of courses and add it to the Courses array
-
-        Course course1 = new Course("COSC2083","Introduction to Information Technology", 12, "2021A");
-        Course course2 = new Course("COSC2429","Introduction to Programming", 12,"2021A");
-        Course course3 = new Course("ISY3414","Practical Database Concept", 12,"2021A");
-        Course course4 = new Course("COSC2500", "Intro to Computer Systems", 12,"2021B");
-        Course course5 = new Course("COSC2534","Building IT Systems", 12,"2021B");
-        Course course6 = new Course("COSC2652", "User-central Design", 12,"2021B");
-        Course course7 = new Course("COSC2430", "Web Programming", 12,"2021B");
-        Course course8 = new Course("COSC2081","Programming 1", 12,"2021C");
-        Course course9 = new Course("COSC2440", "Software Architecture: Design and Implementation", 12,"2021C");
-        Course course10 = new Course("COSC2539","Security in Computing and Information Technology", 12,"2021C");
-
-        this.coursesList.add(course1);
-        this.coursesList.add(course2);
-        this.coursesList.add(course3);
-        this.coursesList.add(course4);
-        this.coursesList.add(course5);
-        this.coursesList.add(course6);
-        this.coursesList.add(course7);
-        this.coursesList.add(course8);
-        this.coursesList.add(course9);
-        this.coursesList.add(course10);
-    }
+//    public void listOfCourses(){
+//        // Creating a list of courses and add it to the Courses array
+//
+//        Course course1 = new Course("COSC2083","Introduction to Information Technology", 12, "2021A");
+//        Course course2 = new Course("COSC2429","Introduction to Programming", 12,"2021A");
+//        Course course3 = new Course("ISY3414","Practical Database Concept", 12,"2021A");
+//        Course course4 = new Course("COSC2500", "Intro to Computer Systems", 12,"2021B");
+//        Course course5 = new Course("COSC2534","Building IT Systems", 12,"2021B");
+//        Course course6 = new Course("COSC2652", "User-central Design", 12,"2021B");
+//        Course course7 = new Course("COSC2430", "Web Programming", 12,"2021B");
+//        Course course8 = new Course("COSC2081","Programming 1", 12,"2021C");
+//        Course course9 = new Course("COSC2440", "Software Architecture: Design and Implementation", 12,"2021C");
+//        Course course10 = new Course("COSC2539","Security in Computing and Information Technology", 12,"2021C");
+//
+//        this.coursesList.add(course1);
+//        this.coursesList.add(course2);
+//        this.coursesList.add(course3);
+//        this.coursesList.add(course4);
+//        this.coursesList.add(course5);
+//        this.coursesList.add(course6);
+//        this.coursesList.add(course7);
+//        this.coursesList.add(course8);
+//        this.coursesList.add(course9);
+//        this.coursesList.add(course10);
+//    }
 
     public void readFile(String fileName) throws IOException {
         BufferedReader csvReader = null;
