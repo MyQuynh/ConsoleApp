@@ -7,6 +7,7 @@ import org.junit.contrib.java.lang.system.TextFromStandardInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
+import static org.mockito.Mockito.*;
 
 import static org.junit.Assert.*;
 
@@ -72,17 +73,10 @@ public class CourseManagerTest {
 
     @Test
     public void showCoursesList() {
-        CourseManager courseManager = new CourseManager();
+        CourseManager courseManager = mock(CourseManager.class);
         courseManager.showCoursesList();
-        assertTrue(true);
+        verify(courseManager,times(1)).showCoursesList();
     }
-
-//    @Test
-//    public void listOfCourses() {
-//        CourseManager courseManager = new CourseManager();
-//        courseManager.listOfCourses();
-//        assertTrue(true);
-//    }
 
     @Test
     public void readFile() {

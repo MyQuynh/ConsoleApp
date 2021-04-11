@@ -8,6 +8,7 @@ import org.junit.contrib.java.lang.system.TextFromStandardInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
+import static org.mockito.Mockito.*;
 
 import static org.junit.Assert.*;
 
@@ -67,8 +68,9 @@ public class StudentManagerTest {
 
     @Test
     public void showStudentList() {
-        StudentManager studentManager = new StudentManager();
+        StudentManager studentManager = mock(StudentManager.class);
         studentManager.showStudentList();
+        verify(studentManager,times(1)).showStudentList();
     }
 
     @Test

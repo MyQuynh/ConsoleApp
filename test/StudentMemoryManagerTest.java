@@ -7,6 +7,9 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.contrib.java.lang.system.TextFromStandardInputStream;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 
 import java.io.File;
 import java.io.IOException;
@@ -16,8 +19,10 @@ import java.util.List;
 import java.util.Scanner;
 
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
 
 public class StudentMemoryManagerTest {
+
 
     @Before
     public void resetScanner() {
@@ -123,19 +128,20 @@ public class StudentMemoryManagerTest {
     @Test
     public void execute() {
         // Assume that we want to exit the system
-        StudentMemoryManager studentMemoryManager = new StudentMemoryManager();
+        StudentMemoryManager studentMemoryManager1 = mock(StudentMemoryManager.class);
         systemInMock.provideLines("y","a","-1","7");
-        studentMemoryManager.execute();
-
+        studentMemoryManager1.execute();
+        verify(studentMemoryManager1,times(1)).execute();
     }
 
     // Adding course in student enrollment
     @Test
     public void update() {
         // Assume that we want to exit the update menu
-        StudentMemoryManager studentMemoryManager = new StudentMemoryManager();
+        StudentMemoryManager studentMemoryManager1 = mock(StudentMemoryManager.class);
         systemInMock.provideLines("a","-1","3");
-        studentMemoryManager.update();
+        studentMemoryManager1.update();
+        verify(studentMemoryManager1,times(1)).update();
     }
 
     @Test
@@ -174,14 +180,20 @@ public class StudentMemoryManagerTest {
         assertFalse(studentMemoryManager.studentEnrollments.contains(studentEnrollment3));
     }
 
+
     @Test
     public void displayCoursesOfStudent() {
+
+        StudentMemoryManager studentMemoryManager1 = mock(StudentMemoryManager.class);
+
         String studentId = "S3836322";
         String semester = "2021A";
         StudentMemoryManager studentMemoryManager = new StudentMemoryManager();
-        studentMemoryManager.createList();
-        studentMemoryManager.displayCoursesOfStudent(studentId,semester);
-        assertTrue(true);
+        studentMemoryManager1.createList();
+        studentMemoryManager1.displayCoursesOfStudent(studentId,semester);
+        //doNothing().when(studentMemoryManager1).createList();
+        verify(studentMemoryManager1,times(1)).displayCoursesOfStudent(studentId, semester);
+        //assertTrue(true);
     }
 
     @Test
@@ -251,25 +263,41 @@ public class StudentMemoryManagerTest {
 
     @Test
     public void getOne() {
-        StudentMemoryManager studentMemoryManager = new StudentMemoryManager();
-        studentMemoryManager.createList();
+        StudentMemoryManager studentMemoryManager1 = mock(StudentMemoryManager.class);
+        studentMemoryManager1.createList();
         systemInMock.provideLines("S3836322","2021A","ISY3414");
-        studentMemoryManager.getOne();
+        studentMemoryManager1.getOne();
+        verify(studentMemoryManager1,times(1)).getOne();
     }
 
     @Test
     public void display(){
-        StudentMemoryManager studentMemoryManager = new StudentMemoryManager();
+//        StudentMemoryManager studentMemoryManager = new StudentMemoryManager();
+//        systemInMock.provideLines("4");
+//        studentMemoryManager.display();
+
+        StudentMemoryManager studentMemoryManager1 = mock(StudentMemoryManager.class);
+        //studentMemoryManager1.createList();
         systemInMock.provideLines("4");
-        studentMemoryManager.display();
+        studentMemoryManager1.display();
+        //doNothing().when(studentMemoryManager1).createList();
+        verify(studentMemoryManager1,times(1)).display();
+        //assertTrue(true);
     }
 
     @Test
     // Testing for display all the student enrollments
     public void getAll() {
-        StudentMemoryManager studentMemoryManager = new StudentMemoryManager();
-        studentMemoryManager.createList();
-        studentMemoryManager.getAll();
+//        StudentMemoryManager studentMemoryManager = new StudentMemoryManager();
+//        studentMemoryManager.createList();
+//        studentMemoryManager.getAll();
+
+        StudentMemoryManager studentMemoryManager1 = mock(StudentMemoryManager.class);
+        studentMemoryManager1.createList();
+        studentMemoryManager1.getAll();
+        //doNothing().when(studentMemoryManager1).createList();
+        verify(studentMemoryManager1,times(1)).getAll();
+        //assertTrue(true);
     }
 
     @Test
@@ -323,9 +351,10 @@ public class StudentMemoryManagerTest {
 
     @Test
     public void askingLoad(){
-        StudentMemoryManager studentMemoryManager = new StudentMemoryManager();
+        StudentMemoryManager studentMemoryManager1 = mock(StudentMemoryManager.class);
         systemInMock.provideLines("y");
-        studentMemoryManager.askingLoad();
+        studentMemoryManager1.askingLoad();
+        verify(studentMemoryManager1,times(1)).askingLoad();
     }
 
     @Test
